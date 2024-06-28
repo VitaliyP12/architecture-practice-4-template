@@ -50,6 +50,11 @@ func main() {
 
 	h.Handle("/report", report)
 
+	h.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+		rw.WriteHeader(http.StatusOK)
+		_, _ = rw.Write([]byte("OK, but there is nothing here")) // needed because our balancer uses URL path
+	})
+
 	server := httptools.CreateServer(*port, h)
 	server.Start()
 	signal.WaitForTerminationSignal()
